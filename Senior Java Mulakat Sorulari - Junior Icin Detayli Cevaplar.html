@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Senior Java Mülakat Soruları — Junior Türk Developer için Detaylı Cevaplar</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a202c;
+    --muted: #4a5568;
+    --accent: #2b6cb0;
+    --accent-soft: #ebf4ff;
+    --border: #e2e8f0;
+    --code-bg: #f6f8fa;
+    --quote-bg: #fffaf0;
+    --quote-border: #dd6b20;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 5rem;
+    line-height: 1.75;
+    color: var(--fg);
+    background: var(--bg);
+  }
+  header.site { border-bottom: 3px double var(--border); padding-bottom: 1rem; margin-bottom: 2rem; }
+  header.site h1 { font-size: 1.9rem; line-height: 1.3; margin: 0 0 .5rem; }
+  header.site p.meta { color: var(--muted); font-size: .95rem; margin: 0; font-family: system-ui, sans-serif; }
+  nav.toc { background: var(--accent-soft); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.5rem; margin: 1.5rem 0 2.5rem; font-family: system-ui, sans-serif; font-size: .95rem; }
+  nav.toc ol { margin: .5rem 0 0; padding-left: 1.2rem; }
+  nav.toc a { color: var(--accent); text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+  article.q { margin-bottom: 3.5rem; }
+  h2.q-title {
+    font-size: 1.45rem;
+    border-left: 5px solid var(--accent);
+    padding-left: .75rem;
+    margin: 0 0 1rem;
+  }
+  h3 { font-size: 1.15rem; margin-top: 2rem; }
+  p.lead { font-style: italic; color: var(--muted); }
+  .subq { background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: .9rem 1.2rem; font-family: system-ui, sans-serif; font-size: .92rem; }
+  .subq strong { display: block; margin-bottom: .35rem; }
+  .subq ul { margin: 0; padding-left: 1.2rem; }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: .9rem 1.1rem;
+    overflow-x: auto;
+    font-size: .88rem;
+    line-height: 1.55;
+  }
+  code { font-family: Consolas, 'Courier New', monospace; }
+  p code, li code { background: var(--code-bg); border: 1px solid var(--border); border-radius: 4px; padding: .05rem .3rem; font-size: .88em; }
+  blockquote {
+    margin: 1.2rem 0;
+    padding: .6rem 1.1rem;
+    background: var(--quote-bg);
+    border-left: 4px solid var(--quote-border);
+    font-style: italic;
+    color: var(--muted);
+  }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-family: system-ui, sans-serif; font-size: .92rem; }
+  th, td { border: 1px solid var(--border); padding: .5rem .7rem; text-align: left; vertical-align: top; }
+  th { background: var(--accent-soft); }
+  .tip { font-family: system-ui, sans-serif; font-size: .93rem; background: #f0fff4; border: 1px solid #c6f6d5; border-radius: 8px; padding: .8rem 1.1rem; }
+  .tip strong:first-child { color: #276749; }
+  footer.site { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); color: var(--muted); font-size: .9rem; font-family: system-ui, sans-serif; }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <h1>Senior Java Mülakat Soruları ve Detaylı Cevapları</h1>
+  <p class="meta">Kaynak: "Top 10 Senior Java Developer Interview Questions for 10+ Years of Experience" (Medium / Freedium)<br>
+  Bu doküman: Soruların <strong>junior Türk developer'lar için sadeleştirilmiş, detaylı Türkçe cevapları</strong>.</p>
+</header>
+
+<nav class="toc">
+  <strong>İçindekiler</strong>
+  <ol>
+    <li><a href="#q1">Java Memory Management ve Memory Leak</a></li>
+    <li><a href="#q2">JVM Mimarisi ve Garbage Collection</a></li>
+    <li><a href="#q3">Multithreading ve Concurrency</a></li>
+    <li><a href="#q4">Synchronization ve Thread Safety</a></li>
+    <li><a href="#q5">Spring Boot ile Microservices Mimarisi</a></li>
+    <li><a href="#q6">Java Uygulama Performans Optimizasyonu</a></li>
+    <li><a href="#q7">Spring Boot Transaction Management</a></li>
+    <li><a href="#q8">Java Collections'ın İç Çalışması</a></li>
+    <li><a href="#q9">Java Uygulama Güvenliği (Spring Security)</a></li>
+    <li><a href="#q10">Gerçek Hayat Production Sorunu ve Çözümü</a></li>
+  </ol>
+</nav>
+
+<article class="q" id="q1">
+  <h2 class="q-title">1. Java Memory Management ve Memory Leak</h2>
+  <p class="lead">"Java belleği içeride nasıl yönetir? JVM ve garbage collector'ın (çöp toplayıcı) bellek yönetimindeki rolü nedir?"</p>
+
+  <div class="subq">
+    <strong>Mülakatta gelebilecek alt sorular:</strong>
+    <ul>
+      <li>Kurumsal (enterprise) uygulamalarda memory leak'in yaygın nedenleri nelerdir?</li>
+      <li>JVisualVM, Java Flight Recorder (JFR) ve heap dump gibi araçlarla memory leak nasıl tespit edilir?</li>
+      <li>Object retention (nesne tutulması) nasıl analiz edilir; hangi nesneler garbage collection'ı engelliyor, nasıl bulunur?</li>
+      <li>Bellek kaynaklı production sorunlarını teşhis etmek ve çözmek için hangi stratejiler kullanılır?</li>
+    </ul>
+  </div>
+
+  <h3>Detaylı Cevap</h3>
+  <p>Java'da belleği sen manuel yönetmezsin (C'deki <code>malloc/free</code> gibi). Bunun yerine iki temel oyuncu var:</p>
+  <ul>
+    <li><strong>JVM (Java Virtual Machine):</strong> Programının çalıştığı ortamdır. Belleği bölgelere ayırır: <strong>Heap</strong> (nesnelerin yaşadığı yer), <strong>Stack</strong> (metot çağrıları ve local değişkenler) ve <strong>Metaspace</strong> (class metadata).</li>
+    <li><strong>Garbage Collector (GC):</strong> Heap'te artık kimse referans etmeyen nesneleri bulup temizler. "Bu nesneye kimse ihtiyaç duymuyor mu?" sorusunu <em>reachability</em> (erişilebilirlik) ile cevaplar: GC köklerinden (aktif thread'lerin stack'leri, static alanlar, JNI referansları) başlayarak nesne grafiğini gezer; hiçbir yoldan ulaşılamayan nesne çöp sayılır.</li>
+  </ul>
+
+  <h3>Memory Leak Nedir, Java'da Neden Olur?</h3>
+  <p>"Java'da GC var, nasıl memory leak olur?" — GC, <em>erişilemeyen</em> nesneleri temizler. Ama bir nesne artık kullanılmadığı halde <em>hâlâ erişilebilir</em> ise (yani bir collection, map, cache ya da listener ona referans tutuyorsa), GC onu silemez. İşte bu bir memory leak'tir. Yaygın nedenler:</p>
+  <ul>
+    <li><strong>Statik collection'lar:</strong> <code>static Map</code> içine sürekli ekleme yapıp silmemek. Uygulama ömrü boyunca büyür.</li>
+    <li><strong>Cache'in sınırsız büyümesi:</strong> Eviction (çıkarma) politikası olmayan cache. Çözüm: <code>WeakHashMap</code>, Caffeine/Guava gibi TTL'li cache'ler, ya da LRU politikası.</li>
+    <li><strong>Listener/callback'lerin kaydının silinmemesi:</strong> <code>addListener()</code> çağırıp <code>removeListener()</code> yapmamak.</li>
+    <li><strong>ThreadLocal temizlenmemesi:</strong> Thread pool'daki thread'ler uzun yaşar; <code>ThreadLocal</code> değerlerini <code>remove()</code> etmezsen, thread yaşadığı sürece nesne heap'te kalır.</li>
+    <li><strong>Kapatılmayan kaynaklar:</strong> <code>InputStream</code>, <code>Connection</code> vb. — try-with-resources kullan.</li>
+    <li><strong>Inner class'ların outer'a örtük referansı:</strong> Non-static inner class, dış sınıfın instance'ını gizlice referans eder.</li>
+  </ul>
+
+  <h3>Leak Nasıl Tespit Edilir? (Araçlar)</h3>
+  <ul>
+    <li><strong>JVisualVM:</strong> Çalışan uygulamaya bağlanır, heap kullanımını canlı izler. Tipik belirti: Full GC sonrası bile heap kullanımı sürekli yükseliyor, "diş testere" grafiği değil monoton artış görülüyor.</li>
+    <li><strong>Java Flight Recorder (JFR) + Mission Control:</strong> Üretimde (production) düşük overhead ile sürekli kayıt tutar; allocation profili, GC davranışı, sıcak noktaları gösterir.</li>
+    <li><strong>Heap dump analizi:</strong> <code>jmap -dump:live,format=b,file=heap.hprof &lt;pid&gt;</code> ile ya da <code>-XX:+HeapDumpOnOutOfMemoryError</code> JVM bayrağıyla dump alınır; sonra Eclipse MAT (Memory Analyzer Tool) ile açılır. MAT'ın <strong>"Leak Suspects"</strong> raporu, en şüpheli nesneleri ve onları tutan referans zincirini (dominator tree + GC roots path) gösterir. "Bu nesneyi kim tutuyor?" sorusunun cevabı leak'in kaynağıdır.</li>
+  </ul>
+
+  <h3>Object Retention Analizi</h3>
+  <p>Heap dump'ta önce hangi nesnelerin en çok yer kapladığını bul (MAT'ta histogram), sonra onlardan GC root'larına giden referans zincirini incele ("Path to GC Roots" — <em>exclude weak/soft references</em> seçeneğiyle). Zincirdeki ilk "sizin kodunuzdan gelen" tutucu genelde suçludur: örn. bir <code>static ConcurrentHashMap</code> ya da bir session nesnesi.</p>
+
+  <h3>Production Bellek Sorunlarında Strateji</h3>
+  <ol>
+    <li>Belirtileri ölç: Grafana/Prometheus ile heap kullanımı, GC süresi, <code>OutOfMemoryError</code> logları.</li>
+    <li>Leak mi, sadece yüksek yük mü ayırt et: Load azalınca heap geri düşüyor mu?</li>
+    <li>Heap dump al (<code>HeapDumpOnOutOfMemoryError</code> ideal olarak sorunu <em>önceden</em> yakalar).</li>
+    <li>MAT ile kök nedeni bul, kodda düzelt.</li>
+    <li>Yeniden test et: uzun süreli load testi + JFR kaydı.</li>
+  </ol>
+
+  <div class="tip"><strong>💡 Junior ipucu:</strong> Mülakatta "GC varken nasıl leak olur?" sorusu en sevilen tuzaktır. Kısa cevabı ezberle: <em>"GC erişilemeyen nesneleri temizler; hâlâ erişilebilir ama kullanılmayan nesneler leak olur."</em></div>
+</article>
+
+<article class="q" id="q2">
+  <h2 class="q-title">2. JVM Mimarisi ve Garbage Collection</h2>
+  <p class="lead">"JVM'in farklı bellek alanlarını ve nasıl çalıştıklarını açıkla."</p>
+
+  <div class="subq">
+    <strong>Alt sorular:</strong>
+    <ul>
+      <li>Heap Memory, Stack Memory ve Metaspace arasındaki farklar nelerdir?</li>
+      <li>Modern Java sürümlerinde garbage collection nasıl çalışır?</li>
+      <li>G1 GC, ZGC ve Shenandoah GC arasındaki farkları açıkla.</li>
+      <li>Stop-the-World (STW) duraklamaları nedir, performansı nasıl etkiler?</li>
+      <li>Yüksek throughput/düşük latency'li kurumsal uygulama için JVM parametreleri nasıl ayarlanır?</li>
+    </ul>
+  </div>
+
+  <h3>Detaylı Cevap — JVM Bellek Alanları</h3>
+  <table>
+    <tr><th>Alan</th><th>Ne saklar</th><th>Kiminle paylaşılır</th><th>Hata</th></tr>
+    <tr><td><strong>Heap</strong></td><td>Tüm nesne instance'ları, diziler</td><td>Tüm thread'ler paylaşır</td><td><code>OutOfMemoryError</code></td></tr>
+    <tr><td><strong>Stack</strong></td><td>Metot çağrı çerçeveleri, local değişkenler, referanslar</td><td>Her thread'in kendi stack'i</td><td><code>StackOverflowError</code></td></tr>
+    <tr><td><strong>Metaspace</strong></td><td>Class metadata, method bytecode, constant pool</td><td>Tüm thread'ler paylaşır (native memory)</td><td><code>Metaspace OOM</code></td></tr>
+    <tr><td><strong>PC Register / Native stacks</strong></td><td>Thread'in o anki komut adresi, native metot çağrıları</td><td>Thread başına</td><td>—</td></tr>
+  </table>
+  <p>Heap, nesnelerin "yaşam döngüsüne göre" kuşaklara (generations) ayrılır: <strong>Young Generation</strong> (Eden + iki Survivor alanı — yeni doğan nesneler burada; çoğu nesne kısa ömürlü olduğu için buradaki GC, yani Minor GC, çok hızlıdır) ve <strong>Old Generation</strong> (birkaç GC'den sağ kalan uzun ömürlü nesneler). Bir nesne yeterince "yaşlanınca" Old Gen'e terfi eder. Old Gen dolunca <strong>Major/Full GC</strong> tetiklenir — bu daha yavaştır.</p>
+
+  <h3>Modern Java'da GC Nasıl Çalışır?</h3>
+  <p>Modern GC'lerin temel fikirleri: (1) <strong>generational hypothesis</strong> — nesnelerin çoğu gençken ölür; (2) <strong>concurrent çalışma</strong> — GC işinin büyük kısmını uygulama thread'leriyle eşzamanlı yapar, duraklamayı minimize eder; (3) <strong>region-tabanlı heap</strong> — heap'i eşit parçalara bölüp her bölgeyi bağımsız toplar. Java 9+ varsayılan GC <strong>G1</strong>'dir; JDK 21'de <strong>Generational ZGC</strong> geldi.</p>
+
+  <h3>G1 vs ZGC vs Shenandoah</h3>
+  <table>
+    <tr><th>GC</th><th>Varsayılan / Durum</th><th>Duraklama (pause)</th><th>Karakter</th></tr>
+    <tr><td><strong>G1</strong></td><td>Java 9+ varsayılan</td><td>Onlarca ms mertebesi, hedefe ayarlanabilir (<code>-XX:MaxGCPauseMillis</code>)</td><td>Region tabanlı, throughput-latency dengesi, çoğu iş için iyi varsayılan</td></tr>
+    <tr><td><strong>ZGC</strong></td><td>Production-ready, JDK 21'de generational oldu</td><td>Sub-milisaniye (~1ms altı)</td><td>Çok büyük heap'ler (TB'ler) ve çok düşük latency hedefleri için; biraz daha fazla CPU maliyeti</td></tr>
+    <tr><td><strong>Shenandoah</strong></td><td>OpenJDK dağıtımlarında (Red Hat kökenli)</td><td>Çok düşük, ZGC'ye benzer</td><td>Aynı problemi farklı teknikle (brooks pointer) çözer</td></tr>
+  </table>
+
+  <h3>Stop-the-World (STW) Nedir?</h3>
+  <p>Bazı GC fazlarında (örn. nesnelerin işaretlenmesi ve taşınması sırasında kısa anlar), JVM <strong>tüm uygulama thread'lerini durdurur</strong> — dünyaya "dur" der. Bu süre boyunca uygulama hiçbir isteğe cevap veremez. STW süreleri uzunsa (yüzlerce ms — saniyeler): request timeout'lar, health-check düşmeleri, kuyruk birikmesi ve kullanıcı tarafında latency spike'ları görülür. Bu yüzden GC ayarının amacı: <strong>pause sürelerini iş ihtiyacına göre sınırlamak</strong>.</p>
+
+  <h3>JVM Ayarlama (Tuning) — Temel Parametreler</h3>
+  <pre><code>java -Xms4g -Xmx4g \                 # heap başlangıcı = maksimum (dalgalanmayı önler)
+     -XX:+UseG1GC \                  # GC seçimi (veya UseZGC)
+     -XX:MaxGCPauseMillis=50 \       # G1'e "duraklamaları 50ms'de tut" hedefi ver
+     -XX:MetaspaceSize=256m \        # metaspace genişleme tetik noktası
+     -XX:+HeapDumpOnOutOfMemoryError \   # OOM anında otomatik heap dump
+     -XX:HeapDumpPath=/dumps \       # dump yeri
+     -Xlog:gc*:file=gc.log:time \    # GC logları (analiz için şart)
+     -jar app.jar</code></pre>
+  <p>İyi pratik: <code>-Xms</code> = <code>-Xmx</code> yapmak (heap'i önceden rezerve et, büyüme anlarında pause olmasın), GC loglarını her zaman açık tutmak, ayarı <strong>ölçüme göre</strong> yapmak — "körleme -Xmx artırma" değil.</p>
+
+  <div class="tip"><strong>💡 Junior ipucu:</strong> "Hangi GC'yi seçerdin?" sorusunda güvenli cevap: <em>"Önce G1 ile başlarım; ölçümlerim düşük latency gerektiriyorsa ve heap büyükse ZGC'yi değerlendiririm. GC seçimi ölçümle yapılır."</em></div>
+</article>
+
+<article class="q" id="q3">
+  <h2 class="q-title">3. Multithreading ve Concurrency</h2>
+  <p class="lead">"Bir Java uygulamasında verimli çoklu thread ve concurrency nasıl uygulanır?"</p>
+
+  <div class="subq">
+    <strong>Alt sorular:</strong>
+    <ul>
+      <li>Process ile thread farkı nedir?</li>
+      <li>ExecutorService, CompletableFuture ve ForkJoinPool'u pratik kullanım örnekleriyle açıkla.</li>
+      <li>Yüksek concurrency'li uygulamalarda thread pool'lar nasıl yönetilir?</li>
+      <li>Race condition, deadlock ve thread starvation nedir?</li>
+      <li>Production'da concurrency kaynaklı sorunlar nasıl teşhis edilir?</li>
+    </ul>
+  </div>
+
+  <h3>Process vs Thread</h3>
+  <ul>
+    <li><strong>Process:</strong> Kendi bellek alanına (address space) sahip bağımsız program. İki process birbirinin belleğini doğrudan göremez; iletişim pahalıdır (IPC, socket).</li>
+    <li><strong>Thread:</strong> Aynı process içinde çalışan, <strong>heap'i paylaşan</strong> ama kendi stack'i olan yürütme birimi. Bellek paylaşımı kolay (ve tehlikeli — o yüzden senkronizasyon gerekir). Oluşturulması process'ten çok daha ucuz.</li>
+  </ul>
+
+  <h3>ExecutorService — "Thread'leri Ben Yönetmem, Havuz Yönetir"</h3>
+  <p>Ham <code>new Thread()</code> yerine thread pool kullanılır; thread oluşturma maliyetinden ve sınırsız thread patlamasından kaçınılır.</p>
+  <pre><code>ExecutorService pool = Executors.newFixedThreadPool(10);
+Future&lt;String&gt; f = pool.submit(() -> veriTabaniCagrisi());  // Future ile sonuç bekle
+pool.shutdown();  // kapatmayı unutma!</code></pre>
+  <p><strong>Not:</strong> <code>Executors.newFixedThreadPool</code> sınırsız kuyruk kullanır — üretimde genelde doğrudan <code>ThreadPoolExecutor</code> ile sınırlı kuyruk + reddetme politikası (CallerRunsPolicy vb.) tercih edilir.</p>
+
+  <h3>CompletableFuture — Asenkron Zincirleme</h3>
+  <p>Bir işin sonucu geldiğinde "şunu da yap" demenin modern, okunabilir yolu. Birden çok bağımsız çağrıyı paralel yapıp birleştirmek için idealdir.</p>
+  <pre><code>CompletableFuture&lt;User&gt; user   = CompletableFuture.supplyAsync(() -> kullaniciGetir(id), pool);
+CompletableFuture&lt;List&lt;Siparis&gt;&gt; sip = CompletableFuture.supplyAsync(() -> siparisleriGetir(id), pool);
+
+user.thenCombine(sip, (u, s) -> yeniRapor(u, s))   // ikisi bitince birleştir
+    .thenAccept(raporGonder)
+    .exceptionally(ex -> { log.hata(ex); return null; });</code></pre>
+  <p>Pratik kullanım: bir REST endpoint'i kullanıcı + profil + öneri verisini üç ayrı servisten <strong>paralel</strong> çekmek (sıralı çağırırsan 3× latency, paralelde max tek çağrı süresi).</p>
+
+  <h3>ForkJoinPool — "Böl ve Yönet" Paralellizmi</h3>
+  <p>Büyük işi küçük alt işlere bölüp (fork) sonuçları birleştiren (join) havuz; <strong>work-stealing</strong> ile boşta kalan thread'ler diğerlerinin kuyruğundan iş çalar. <code>parallelStream()</code> arka planda ortak (common) ForkJoinPool'u kullanır. Dikkat: parallelStream içinde blocking I/O yapma — ortak havuzu kilitlersin, uygulama genelinde yavaşlar.</p>
+
+  <h3>Thread Pool Yönetimi (Yüksek Concurrency)</h3>
+  <ul>
+    <li><strong>Boyutlandırma:</strong> CPU-bound işler için ~ CPU çekirdek sayısı; I/O-bound işler için daha fazla (çünkü thread'ler çoğu zaman bekler). Kural olarak <code>N_cpu * (1 + bekleme/hesaplama oranı)</code>.</li>
+    <li><strong>Tek ortak havuz yerine iş türüne göre ayrı havuzlar</strong> (I/O çağrıları için bir havuz, CPU işleri için başka) — bulkhead ilkesi, tıkanmanın yayılmasını önler.</li>
+    <li><strong>Sınırlı kuyruk + reddetme politikası:</strong> Kuyruk dolduğunda ne olacak? <code>AbortPolicy</code> (hata fırlat), <code>CallerRunsPolicy</code> (gönderen thread çalıştırır — doğal geri basınç/backpressure), <code>DiscardPolicy</code> (sessizce at — genelde kötü).</li>
+    <li><strong>Thread isimlendirme:</strong> Loglarda/thread dump'ta teşhisi kolaylaştırır (<code>ThreadFactory</code> ile).</li>
+    <li><strong>Graceful shutdown:</strong> <code>shutdown()</code> + <code>awaitTermination</code>.</li>
+  </ul>
+
+  <h3>Klasik Üç Düşman: Race Condition, Deadlock, Starvation</h3>
+  <ul>
+    <li><strong>Race condition:</strong> Sonucun, thread'lerin işlemleri hangi sırada yaptığına bağlı olması. Klasik örnek: iki thread'in aynı <code>counter++</code>'yı yapması (okuma-artırma-yazma atomik değil). Çözüm: senkronizasyon veya atomic sınıflar.</li>
+    <li><strong>Deadlock:</strong> İki thread birbirinin tuttuğu kilidi bekleyip sonsuza kadar kilitlenmesi. Koşul: sırayla iki kilit alınır, iki thread ters sırada alır. Çözüm: kilitleri <strong>her yerde aynı sırada</strong> al; mümkünse <code>tryLock(timeout)</code> kullan.</li>
+    <li><strong>Thread starvation:</strong> Bir thread, kaynaklara (CPU, kilit, havuzdaki slot) erişemeyip aç kalır. Örn. yüksek öncelikli işler kilidi sürekli tutunca düşük öncelikli iş aç kalır; ya da kuyrukta sona kalan istek hiç sırası gelmez.</li>
+  </ul>
+
+  <h3>Production'da Concurrency Sorunu Teşhisi</h3>
+  <ul>
+    <li><strong>Thread dump al</strong> (<code>jstack &lt;pid&gt;</code> ya da <code>kill -3</code>): <code>BLOCKED</code> durumunda kilit bekleyen thread'ler ve deadlock tespiti (JVM "Found one Java-level deadlock" yazar). İki-üç dump'ı 10 sn arayla alıp karşılaştırmak "hangi kilit sürekli tutuluyor" sorusunu cevaplar.</li>
+    <li><strong>Pool metrikleri:</strong> aktif thread sayısı, kuyruk boyutu, reddedilen görev sayısı → Metrikleri Prometheus'a aktar.</li>
+    <li><strong>JFR:</strong> Lock contention ve thread park olaylarını düşük maliyetle kaydeder.</li>
+  </ul>
+
+  <div class="tip"><strong>💡 Junior ipucu:</strong> Mülakatta CompletableFuture örneği istenebilir. "İki bağımsız servisi paralel çağırıp thenCombine ile birleştiririm" demek + küçük bir kod yazmak çok etkileyicidir.</div>
+</article>
+
+<article class="q" id="q4">
+  <h2 class="q-title">4. Synchronization ve Thread Safety</h2>
+  <p class="lead">"synchronized, ReentrantLock, volatile ve Atomic değişkenler arasındaki farkları açıkla."</p>
+
+  <div class="subq">
+    <strong>Alt sorular:</strong>
+    <ul>
+      <li><code>synchronized</code> anahtar kelimesi içeride nasıl çalışır?</li>
+      <li>ReentrantLock'un synchronized'a göre avantajları nelerdir?</li>
+      <li><code>volatile</code> anahtar kelimesinin amacı nedir?</li>
+      <li>AtomicInteger ve diğer atomic sınıflar thread-safe işlemleri nasıl garantiler?</li>
+      <li>Yüksek concurrency'li uygulamada hangi yaklaşımı ne zaman seçerdin?</li>
+    </ul>
+  </div>
+
+  <h3>Detaylı Cevap — Karşılaştırma Tablosu</h3>
+  <table>
+    <tr><th>Araç</th><th>Ne sağlar</th><th>Yapmaz</th><th>Tipik kullanım</th></tr>
+    <tr><td><code>synchronized</code></td><td>Mutual exclusion (karşılıklı dışlama) + görünürlük</td><td>Adil olmayan alma, timeout, kesilebilirlik</td><td>Basit kritik bölge</td></tr>
+    <tr><td><code>ReentrantLock</code></td><td>Yukarıdakiler + <code>tryLock(timeout)</code>, adil kilit (fair), <code>lockInterruptibly()</code>, birden çok <code>Condition</code></td><td>Otomatik kilit bırakma (finally'de sen bırak)</td><td>Gelişmiş kontrol gereken durumlar</td></tr>
+    <tr><td><code>volatile</code></td><td><strong>Görünürlük</strong> ve sıralamayı koruma (değişikliği diğer thread'lere anında yansıtır)</td><td>Atomiklik! <code>volatile int i; i++</code> hâlâ thread-safe <em>değildir</em></td><td>Bir thread'in yazdığı bayrağı (flag) diğerinin okuması</td></tr>
+    <tr><td><code>AtomicXxx</code></td><td>Hem görünürlük <strong>hem atomiklik</strong> (CAS ile)</td><td>Karmaşık çoklu-değişken senkronizasyonu</td><td>Sayaçlar, referans güncellemeleri</td></tr>
+  </table>
+
+  <h3><code>synchronized</code> İçeride Nasıl Çalışır?</h3>
+  <p>JVM seviyesinde her nesnenin bir <strong>monitor (intrinsik kilit)</strong> vardır. <code>synchronized(obj) { ... }</code> bloğuna giren thread o monitörü sahiplenir; çıkarken bırakır. Modern JVM'de kilit ilk başta hafif moddadır: <strong>biasing/spinning</strong> (kısa süre meşgul bekleme) dener, rekabet artarsa OS seviyesine (mutex) yükseltir (lock inflation). Ayrıca <strong>reentrant</strong>'tir: aynı thread kilidi yeniden alabilir (kaç kez aldıysa o kadar bırakır).</p>
+
+  <h3>ReentrantLock'un Avantajları</h3>
+  <pre><code>private final ReentrantLock lock = new ReentrantLock();
+
+void islem() {
+    if (lock.tryLock(100, TimeUnit.MILLISECONDS)) {  // beklerken vazgeçebilirim
+        try {
+            // kritik bölge
+        } finally {
+            lock.unlock();   // synchronized'de bu otomatikti, burada SEN sorumlusun
+        }
+    } else {
+        // kilidi alamadım — farklı bir yol izle (hızlı geri dönüş)
+    }
+}</code></pre>
+  <ul>
+    <li><code>tryLock(timeout)</code> — sonsuz beklemeyi engeller, deadlock'a karşı savunma.</li>
+    <li><code>lockInterruptibly()</code> — beklerken interrupt edilebilir (deadlock'tan kurtulma yolu).</li>
+    <li><code>new ReentrantLock(true)</code> — fair lock: bekleme sırasına saygı gösterir, starvation'ı azaltır (ama throughput düşürür).</li>
+    <li><code>Condition</code> — birden fazla bekleme/uyandırma kuyruğu (birden çok <code>wait/notify</code> grubu).</li>
+  </ul>
+
+  <h3><code>volatile</code> Ne Yapar, Ne Yapmaz?</h3>
+  <p>Sorun şudur: her thread performans için değişkenleri CPU cache'inde tutabilir; bir thread'in yazdığı değer diğerine gecikmeli ulaşır. <code>volatile</code> der ki: <em>"Bu değişkene her yazma doğrudan ana belleğe gitsin, her okuma ana bellekten gelsin; ayrıca komutlar yeniden sıralanmasın."</em> Yani <strong>görünürlük garantisi</strong> verir. Ama <code>i++</code> gibi <em>okuma+yazma</em> kombinasyonlarını atomik yapmaz — iki thread aynı anda 5 okuyup 6 yazabilir, sonuç 6 olur (7 yerine).</p>
+
+  <h3>Atomic Sınıflar ve CAS</h3>
+  <p><code>AtomicInteger.incrementAndGet()</code>, kilit kullanmadan <strong>CAS (Compare-And-Swap)</strong> donanım komutuyla çalışır: "Değer hâlâ 5 ise 6 yap." Başarısız olursa (o arada başka thread değiştirmişse) işlemi tekrar dener (spin). Kilit yoktur, thread bloklamaz; rekabet azsa synchronized'den hızlıdır. Ayrıca <code>AtomicReference</code> + <code>compareAndSet</code> ile kilitsiz veri yapıları yazılabilir.</p>
+
+  <h3>Hangi Durumda Hangisi? (Karar Kılavuzu)</h3>
+  <ul>
+    <li>Tek bir boolean/int bayrak, sadece görünürlük → <code>volatile</code></li>
+    <li>Sayma/ sayaç gibi tek değişkenli atomik güncelleme → <code>AtomicInteger</code>/<code>LongAdder</code> (yüksek rekabette LongAdder daha iyi)</li>
+    <li>Birden fazla değişkenin birlikte güncellenmesi, kritik bölge → <code>synchronized</code> (basitse) ya da <code>ReentrantLock</code> (timeout/fair/interrupt gerekiyorsa)</li>
+    <li>Paylaşılan collection → <code>ConcurrentHashMap</code> gibi concurrent koleksiyonlar (kendi kilidini yazma!)</li>
+  </ul>
+
+  <div class="tip"><strong>💡 Junior ipucu:</strong> "volatile atomiklik sağlar mı?" sorusu klasik tuzaktır. Cevap: <em>"Hayır, sadece görünürlük. Atomik artırma için Atomic sınıflar kullanılır."</em></div>
+</article>
+
+<article class="q" id="q5">
+  <h2 class="q-title">5. Spring Boot ile Microservices Mimarisi</h2>
+  <p class="lead">"Java, Spring Boot ve Spring Cloud kullanarak ölçeklenebilir ve dayanıklı (resilient) bir microservices mimarisi nasıl tasarlanır?"</p>
+
+  <div class="subq">
+    <strong>Alt sorular:</strong>
+    <ul>
+      <li>Microservices tasarlarken servis sınırları (boundaries) nasıl belirlenir?</li>
+      <li>Servisler REST API ve asenkron mesajlaşma ile nasıl iletişim kurar?</li>
+      <li>API Gateway ve service discovery'nin rolü nedir?</li>
+      <li>Merkezi konfigürasyon yönetimi nasıl uygulanır?</li>
+      <li>Circuit breaker, retry, timeout ve bulkhead pattern'lerini açıkla.</li>
+      <li>Birden çok microservice arasında veri tutarlılığı nasıl sağlanır?</li>
+    </ul>
+  </div>
+
+  <h3>Servis Sınırları Nasıl Belirlenir?</h3>
+  <p>Altın kural: servisler <strong>iş yeteneğine (business capability)</strong> göre bölünür — tabloların/teknolojinin değil. "Sipariş", "Ödeme", "Stok", "Bildirim" gibi. Domain-Driven Design'ın <strong>Bounded Context</strong> kavramı: her servisin kendi modeli ve kendi veritabanı vardır (<strong>database-per-service</strong> — bir servisin tablosuna doğrudan başka servisten SQL atılmaz). Kaba bir test: "Bu servisi silersem hangi işlev gider?" — cevap tek ve net bir işlevse sınır doğrudur.</p>
+
+  <h3>İletişim: Senkron (REST) vs Asenkron (Mesajlaşma)</h3>
+  <ul>
+    <li><strong>Senkron REST/gRPC:</strong> Cevabın hemen gerekli olduğu yerlerde (örn. ödeme onayı). Dezavantaj: çağrılan servis yavaşsa sen de yavaşlarsın (zincirleme arıza riski).</li>
+    <li><strong>Asenkron mesajlaşma (Kafka, RabbitMQ):</strong> Olay (event) yayını — "SiparişOluşturuldu" event'ini yayınlar; stok ve bildirim servisleri dinler. Servisler birbirini tanımaz (<strong>loose coupling</strong>), birinin yavaşlaması diğerini kilitlemez. Event-driven mimarinin temelidir.</li>
+  </ul>
+
+  <h3>API Gateway ve Service Discovery</h3>
+  <ul>
+    <li><strong>API Gateway (Spring Cloud Gateway):</strong> Tüm dış isteklerin tek kapısı. Routing, authentication/authorization (token doğrulama), rate limiting, SSL sonlandırma, istek birleştirme. İstemciler iç topolojiyi bilmez.</li>
+    <li><strong>Service Discovery (Eureka, Consul, Kubernetes DNS):</strong> Container ortamında servis adresleri sürekli değişir. Servisler ayağa kalkınca kendini registry'ye kaydeder; çağıran taraf isimle arar. Kubernetes'te bu iş built-in DNS/service ile zaten çözülür.</li>
+  </ul>
+
+  <h3>Merkezi Konfigürasyon (Spring Cloud Config)</h3>
+  <p>Config'ler (veritabanı adresi, feature flag'ler) Git'te tutulur; Spring Cloud Config Server bunları servis eder; her servis boot sırasında kendi profil config'ini çeker. <code>spring-cloud-bus</code> + <code>@RefreshScope</code> ile çalışırken config güncellenebilir. Kubernetes dünyasında alternatif: ConfigMap + Secret.</p>
+
+  <h3>Dayanıklılık (Resilience) Pattern'leri — Resilience4j</h3>
+  <table>
+    <tr><th>Pattern</th><th>Ne işe yarar</th></tr>
+    <tr><td><strong>Circuit Breaker</strong></td><td>Bir servise çağrılar sürekli hata veriyorsa, "devreyi aç": bir süre çağrıları hiç deneme, hemen fallback dön. Servisi toparlanmak için korur; kilitlenme zincirini (cascading failure) kırar.</td></tr>
+    <tr><td><strong>Retry</strong></td><td>Geçici hataları (timeout, kısa 5xx) üstel geri çekilme (exponential backoff) ile tekrar dene. <em>Idempotent</em> olmayan işlemlerde dikkat: tekrar denemek çift kayıt yaratabilir.</td></tr>
+    <tr><td><strong>Timeout</strong></td><td>Her dış çağrıya üst sınır koy. Timeout'suz çağrı, thread'leri sonsuza kadar bloklar.</td></tr>
+    <tr><td><strong>Bulkhead</strong></td><td>Kaynakları bölmek gemideki su geçirmez bölmeler gibi: ödeme servisinin havuzu tıkansa bile, kullanıcı profili çağrıları etkilenmesin (ayrı thread pool / ayrı bağlantı havuzu).</td></tr>
+  </table>
+
+  <h3>Mikroservislerde Veri Tutarlılığı</h3>
+  <p>Her servisin kendi DB'si varken klasik ACID transaction'ı imkânsızdır. Cevap: <strong>Saga pattern</strong> — dağıtık işlem, yerel işlemler + telafi (compensation) adımlarına bölünür. Örn. "Ödeme al → Stok düş → Sipariş oluştur" zincirinde stok düşemezse: ödemeyi iade et. İki yaklaşım: <strong>choreography</strong> (her servis event'leri dinler, merkezi koordinatör yok) ve <strong>orchestration</strong> (bir koordinatör servis adımları yönetir). Ayrıca <strong>eventual consistency</strong> gerçeğini kabullenmek ve <strong>outbox pattern</strong> (DB'ye işlemin kaydı ile event'i aynı transaction'da yazmak, sonra async yayınlamak — "event kaybolması" sorununu çözer) kritik detaylardır.</p>
+
+  <div class="tip"><strong>💡 Junior ipucu:</strong> "Her şeyi microservice yaparım" demek junior göstergesidir. Ekleyecegin cümle: <em>"Önce modüler monolith başlatıp sınırlar netleşince ayırırım; microservice, operasyonel maliyeti yüksek bir mimari kararıdır."</em></div>
+</article>
+
+<article class="q" id="q6">
+  <h2 class="q-title">6. Java Application Performance Optimization</h2>
+  <p class="lead">"Bir Java uygulamasında yüksek CPU kullanımı, artan bellek tüketimi ve yavaş veritabanı sorguları var. Nasıl araştırır ve optimize edersin?"</p>
+
+  <div class="subq">
+    <strong>Alt sorular:</strong>
+    <ul>
+      <li>Thread dump ve profiling araçlarıyla CPU darboğazları nasıl tespit edilir?</li>
+      <li>Bellek tüketimi ve GC aktivitesi nasıl analiz edilir?</li>
+      <li>Yavaş SQL sorguları ve DB darboğazları nasıl tespit edilir?</li>
+      <li>Caching, connection pooling ve sorgu optimizasyonu için hangi teknikler kullanılır?</li>
+      <li>Ağır trafik altında response time ve throughput nasıl iyileştirilir?</li>
+    </ul>
+  </div>
+
+  <h3>Adım Adım Teşhis Yöntemi</h3>
+  <ol>
+    <li><strong>Ölçmeden kod değiştirme.</strong> Önce belirtileri nicelleştir: hangi endpoint, hangi saatte, ne kadar?</li>
+    <li><strong>CPU yüksekse → thread dump al</strong> (aynı anda 2-3 tane, 5-10 sn arayla). Çoğu dump'ta tekrar tekrar aynı stack'te görünen thread'ler suçludur: döngü, regex backtracking, hashing, JSON parse... Alternatif: <strong>async-profiler</strong> veya JFR ile flame graph çıkar — hangi metot CPU yiyor tek görselde görünür.</li>
+    <li><strong>Bellek artıyorsa → GC logları + heap analizi:</strong> GC frekansı/süresi artıyor mu? Full GC'ler sıklaştıysa heap baskısı var. Heap dump al, MAT ile en büyük nesneleri bul (histogram + dominator tree). "Leak mi, yetersiz heap mi, gereksiz büyük nesne üretimi mi?" ayrımı yap.</li>
+    <li><strong>DB yavaşsa → sorgu izleme:</strong> Hibernate <code>show_sql</code> yerine p6spy/statistics; ya da DB tarafında <code>EXPLAIN ANALYZE</code> / slow query log. N+1 sorgu problemine bak (aşağıda).</li>
+  </ol>
+
+  <h3>CPU Darboğazları — Pratik Araçlar</h3>
+  <ul>
+    <li><strong>Thread dump:</strong> <code>jstack &lt;pid&gt;</code> — RUNNABLE thread'lerin stack'lerini karşılaştır.</li>
+    <li><strong>async-profiler:</strong> sampling tabanlı, düşük overhead; flame graph üretir.</li>
+    <li><strong>JFR (Java Flight Recorder):</strong> üretimde güvenle çalışır; "hot methods" ve CPU örneklemesi.</li>
+    <li><strong>VisualVM / IntelliJ Profiler:</strong> geliştirme/staging ortamında.</li>
+  </ul>
+
+  <h3>Bellek ve GC Analizi</h3>
+  <ul>
+    <li>GC loglarını <code>-Xlog:gc*</code> ile aç, gceasy.io gibi araçlarla yorumla. Metrikler: GC frekansı, ortalama/maks pause, promotion oranı.</li>
+    <li>Heap dump'ta beklenmedik büyük tutucular mı var? (örn. 1 milyon adet <code>UserDto</code> cache'te birikmiş)</li>
+    <li>Gereksiz nesne üretimini azalt: string birleştirmek yerine <code>StringBuilder</code>, gereksiz büyük page-size, stream içinde gereksiz ara collection'lar.</li>
+  </ul>
+
+  <h3>Yavaş Sorgular ve DB Optimizasyonu</h3>
+  <ul>
+    <li><strong>EXPLAIN/EXPLAIN ANALYZE ile sorgu planını incele:</strong> seq scan mi yapıyor, index kullanıyor mu?</li>
+    <li><strong>Eksik index'leri ekle</strong> (WHERE, JOIN, ORDER BY kolonlarına); fakat her index yazma performansını da yavaşlatır — dengeli ol.</li>
+    <li><strong>N+1 problemine dikkat:</strong> 100 sipariş için 100 ayrı <code>SELECT * FROM customer</code> sorgusu. Çözüm: <code>JOIN FETCH</code>, <code>@EntityGraph</code>, batch fetching.</li>
+    <li><strong>Sadece lazım olan alanı çek:</strong> <code>SELECT *</code> yerine projection/DTO sorguları.</li>
+    <li><strong>Connection pool ayarı:</strong> HikariCP'nin pool boyutu DB kapasitesine göre; default'lara körlemesine güvenme. Pool tükendiyse (loglarda "connection timeout") istekler kuyrukta bekler — bu da "yavaş API" olarak görünür.</li>
+  </ul>
+
+  <h3>Caching</h3>
+  <ul>
+    <li><strong>Katmanlar:</strong> Uygulama içi (Caffeine) → dağıtık (Redis) → HTTP cache (ETag, Cache-Control) → CDN.</li>
+    <li>Ne cache'lenir: nadir değişen, sık okunan veri (ürün kataloğu, konfig, referans veriler). Ne cache'lenmez: gerçek-zamanlı bakiye gibi hassas/gerçek zamanlı veriler.</li>
+    <li><strong>TTL + invalidation stratejisi</strong> düşün: veri değişince cache nasıl güncellenir? (event ile invalidation)</li>
+    <li>Spring'te: <code>@Cacheable</code>, <code>@CacheEvict</code>.</li>
+  </ul>
+
+  <h3>Ağır Trafik Altında Yanıt Süresi ve Throughput</h3>
+  <ul>
+    <li>Bağımlı çağrıları <strong>paralelleştir</strong> (CompletableFuture).</li>
+    <li>Yazma yollarını asenkron yap (mesaj kuyruğu); kullanıcı beklemesin, event arkada işlensin.</li>
+    <li>Yanıt küçült (gereksiz alan döndürme), gzip/HTTP2, sayfalama.</li>
+    <li>Load shedding / rate limiting ile koruma; ölçüm (p95/p99 latency) olmadan "iyileşme" iddia etme.</li>
+  </ul>
+
+  <div class="tip"><strong>💡 Junior ipucu:</strong> Bu sorunun asıl test ettiği şey <strong>metodoloji</strong>dir. Cevabın "X'i optimize ederim" değil, "önce ölçerim, sonra suçluyu bulurum, sonra o noktayı düzeltirim" mantığıyla ilerlemelidir.</div>
+</article>
+
+<article class="q" id="q7">
+  <h2 class="q-title">7. Spring Boot Transaction Management</h2>
+  <p class="lead">"Spring Boot'ta transaction yönetimi nasıl çalışır? Açıkla."</p>
+
+  <div class="subq">
+    <strong>Alt sorular:</strong>
+    <ul>
+      <li><code>@Transactional</code> anotasyonunun amacı nedir?</li>
+      <li>Propagation seviyelerini açıkla: REQUIRED, REQUIRES_NEW, SUPPORTS.</li>
+      <li>Transaction isolation seviyeleri nedir; dirty read, non-repeatable read, phantom read'i nasıl önler?</li>
+      <li>Transactional metot içinde exception olursa ne olur?</li>
+      <li>Neden self-invocation'da (kendi metodunu çağırma) <code>@Transactional</code> çalışmaz?</li>
+      <li>Birden çok microservice arasında transaction nasıl yönetilir?</li>
+    </ul>
+  </div>
+
+  <h3>Detaylı Cevap — <code>@Transactional</code> Temelleri</h3>
+  <p>Spring, <code>@Transactional</code> metotlarını <strong>AOP proxy</strong> üzerinden sarar: metodu çağırmadan önce transaction açar (commit/rollback'i yönetir), metot bitince commit eder, unchecked exception atılınca rollback yapar.</p>
+  <pre><code>@Service
+public class SiparisServisi {
+
+    @Transactional
+    public void siparisOlustur(SiparisDto dto) {
+        siparisRepo.save(dto.toEntity());   // hepsi ya hep ya hiç (all-or-nothing)
+        stokRepo.stokDus(dto.getUrunId());
+        odamRepo.kayitEkle(dto);
+    }   // metot sorunsuz biterse COMMIT; RuntimeException → ROLLBACK
+}</code></pre>
+  <p>Önemli not: Varsayılan rollback sadece <code>RuntimeException</code> (ve Error) içindir. Checked exception'da rollback <em>olmaz</em>! İstersen: <code>@Transactional(rollbackFor = Exception.class)</code>.</p>
+
+  <h3>Propagation (Yayılım) Seviyeleri</h3>
+  <table>
+    <tr><th>Seviye</th><th>Anlamı</th></tr>
+    <tr><td><strong>REQUIRED</strong> (varsayılan)</td><td>"Transaction varsa ona katılır, yoksa yeni açar." En yaygın kullanım.</td></tr>
+    <tr><td><strong>REQUIRES_NEW</strong></td><td>"Her durumda KENDİ yeni transaction'ımı aç." Dış transaction rollback edilse bile içteki bağımsız commit olur. Kullanım: audit log — iş başarısız olsa bile log kaydı kalsın.</td></tr>
+    <tr><td><strong>SUPPORTS</strong></td><td>"Varmışsa katılırım, yoksa transaction'sız çalışırım." Transaction opsiyoneldir.</td></tr>
+    <tr><td><strong>MANDATORY</strong></td><td>"Zaten açık bir transaction OLMALI, yoksa hata."</td></tr>
+    <tr><td><strong>NEVER</strong></td><td>"Transaction OLMAMALI, varsa hata."</td></tr>
+  </table>
+
+  <h3>Isolation Seviyeleri ve Eşzamanlılık Anomalileri</h3>
+  <ul>
+    <li><strong>Dirty read:</strong> Başka bir transaction'ın henüz commit etmemiş (ileride geri alınabilecek) verisini okumak.</li>
+    <li><strong>Non-repeatable read:</strong> Aynı transaction içinde aynı satırı iki kez okuyup farklı sonuç almak (arada başka biri UPDATE edip commit etti).</li>
+    <li><strong>Phantom read:</strong> Aynı sorguyu iki kez çalıştırınca satır sayısının değişmesi (arada biri INSERT/DELETE etti).</li>
+  </ul>
+  <table>
+    <tr><th>Isolation</th><th>Dirty read</th><th>Non-repeatable</th><th>Phantom</th></tr>
+    <tr><td>READ_UNCOMMITTED</td><td>olur ⚠</td><td>olur ⚠</td><td>olur ⚠</td></tr>
+    <tr><td>READ_COMMITTED (çoğu DB default'u)</td><td>önlenir</td><td>olur ⚠</td><td>olur ⚠</td></tr>
+    <tr><td>REPEATABLE_READ</td><td>önlenir</td><td>önlenir</td><td>olur ⚠ (MySQL InnoDB'de önlenir)</td></tr>
+    <tr><td>SERIALIZABLE</td><td>önlenir</td><td>önlenir</td><td>önlenir</td></tr>
+  </table>
+  <p>Isolation yükseldikçe güvenlik artar, paralellik/performans düşer. Bu yüzden varsayılan çoğu zaman en mantıklısıdır; sadece gerçek ihtiyaç olan yerde yükselt.</p>
+
+  <h3>Exception Olursa Ne Olur?</h3>
+  <p>Varsayılan: unchecked exception (<code>RuntimeException</code>) → rollback; checked exception → commit. Ayrıca sadece o metot değil, <strong>tümmetot</strong> geri alınır (tek transaction'dakiler). <code>rollbackFor</code>/<code>noRollbackFor</code> ile ayarlanabilir.</p>
+
+  <h3>Self-Invocation Tuzağı (Çok Sevilen Soru!)</h3>
+  <pre><code>@Service
+public class Servis {
+    public void disMetot() {
+        icMetot();          // ⚠️ @Transactional ÇALIŞMAZ!
+    }
+
+    @Transactional
+    public void icMetot() { ... }</code></pre>
+  <p>Neden? Spring transaction'ı <strong>proxy üzerinden</strong> uygular. <code>disMetot()</code>'a dışarıdan çağrı geldiğinde proxy devreye girer; ama içerideki <code>icMetot()</code> çağrısı proxy'den <strong>değil, doğrudan this üzerinden</strong> yapılır — proxy araya giremez, transaction açılmaz. Çözümler: metodu başka bir bean'e taşı, <code>self-injection</code> (proxy üzerinden çağır) veya AspectJ modu. Aynı şekilde <code>private</code>/<code>final</code> metotlardaki <code>@Transactional</code> da çalışmaz (proxy override edemez).</p>
+
+  <h3>Microservices Arası Transaction</h3>
+  <p>Tek DB transaction'ı olamaz → <strong>Saga pattern</strong>, <strong>outbox pattern</strong>, idempotent consumer'lar ve eventual consistency (bkz. Soru 5).</p>
+
+  <div class="tip"><strong>💡 Junior ipucu:</strong> İki tuzak soruyu mutlaka bil: (1) checked exception'da default rollback YOK, (2) self-invocation'da @Transactional ÇALIŞMAZ. İkisi de "Spring'i gerçekten anlıyor musun?" testidir.</div>
+</article>
+
+<article class="q" id="q8">
+  <h2 class="q-title">8. Java Collections'ın İç Çalışması</h2>
+  <p class="lead">"HashMap, ConcurrentHashMap, TreeMap ve LinkedHashMap'in iç implementasyonunu ve farklarını açıkla."</p>
+
+  <div class="subq">
+    <strong>Alt sorular:</strong>
+    <ul>
+      <li>HashMap içeride nasıl çalışır?</li>
+      <li>Modern Java'da hash collision nasıl yönetilir?</li>
+      <li>HashMap ile ConcurrentHashMap farkı nedir?</li>
+      <li>ConcurrentHashMap concurrent erişimi nasıl destekler?</li>
+      <li>HashMap yerine TreeMap ne zaman kullanılır?</li>
+      <li>LinkedHashMap ekleme sırasını nasıl korur?</li>
+      <li>Bu collection'larda yaygın işlemlerin time complexity'si nedir?</li>
+    </ul>
+  </div>
+
+  <h3>HashMap İçeride Nasıl Çalışır?</h3>
+  <ol>
+    <li><code>put(key, value)</code> çağrıldığında önce key'in <code>hashCode()</code> hesaplanır, sonra JVM bunun üzerine bir <em>karıştırma (spreading)</em> fonksiyonu uygular (yüksek bitleri aşağı kaydırır) — dağılımı iyileştirmek için.</li>
+    <li>Bu hash değeri <code>(n - 1) &amp; hash</code> ile bucket indeksine çevirilir (n = tablo boyutu, hep 2'nin kuvveti — böylece mod alma yerine hızlı bit maskesi kullanılır).</li>
+    <li>Bucket boşsa düğüm (Node) koyulur; doluysa aynı bucket'taki elemanlarla <code>equals()</code> ile karşılaştırılır; aynı key varsa value güncellenir, yoksa zincire eklenir.</li>
+    <li><strong>Resize:</strong> Eleman sayısı <code>capacity × loadFactor</code> (default 16 × 0.75 = 12) aşarsa tablo ikiye katlanır ve tüm elemanlar yeniden dağıtılır — maliyetli bir işlemdir, bu yüzden bilinen büyük boyut için <code>new HashMap&lt;&gt;(beklenenSayi)</code> ile kapasite vermek iyi pratiktir.</li>
+  </ol>
+  <p><strong>Kritik sözleşme:</strong> <code>equals()</code>'i override edersen <code>hashCode()</code>'u da override etmelisin. Aksi halde "eşit" iki key farklı bucket'lara düşer ve Map'te ikisi de ayrı kayıt olarak durur — çok klasik bug.</p>
+
+  <h3>Hash Collision Modern Java'da (Java 8+): Treeify</h3>
+  <p>Aynı bucket'ta çok eleman birikirse (collision kötüyse) çift yönlü zincir <strong>kırmızı-siyah ağaca</strong> dönüşür: <em>zincir uzunluğu 8'e ulaşır VE tablo boyutu ≥ 64 ise</em> treeify olur. Böylece en kötü durum O(n)'den <strong>O(log n)</strong>'e iner (hash tabanlı DoS saldırılarına karşı da savunma). Zincir 6'nın altına inince tekrar listeye döner.</p>
+
+  <h3>HashMap vs ConcurrentHashMap</h3>
+  <table>
+    <tr><th></th><th>HashMap</th><th>ConcurrentHashMap</th></tr>
+    <tr><td>Thread-safety</td><td>Yok</td><td>Var</td></tr>
+    <tr><td>null key/value</td><td>1 null key, null value kabul eder</td><td><strong>Kabul etmez</strong> (belirsizliği önlemek için: null dönebilirdi, "yok mu yoksa null mu?" ayırt edilemezdi)</td></tr>
+    <tr><td>İteratör</td><td>fail-fast (ConcurrentModificationException)</td><td>fail-safe (weakly consistent)</td></tr>
+    <tr><td>Performans</td><td>Kilitsiz</td><td>Yüksek rekabette bile ölçeklenir</td></tr>
+  </table>
+
+  <h3>ConcurrentHashMap Nasıl Eşzamanlı Erişim Sağlar?</h3>
+  <ul>
+    <li>Java 7'de <strong>Segment</strong> yaklaşımı vardı (16 ayrı kilit). Java 8'de bu gitti: artık her bucket ilk düğümüne <strong>CAS + synchronized</strong> uygular — yani iki thread farklı bucket'lara yazıyorsa <strong>bibirbirini hiç bloklamaz</strong>. Aynı bucket'a yazıyorlarsa sadece o bucket kilitlenir (fine-grained locking).</li>
+    <li><strong>Okumalar kilitsizdir</strong> (volatile tablolar) — okuma tarafında synchronized yok.</li>
+    <li><strong>Kompozit atomik işlemler:</strong> <code>putIfAbsent</code>, <code>computeIfAbsent</code>, <code>compute</code> — "kontrol et sonra koy" iki adımının atomik yapılmasını sağlar. (Yoksa <code>containsKey</code> + <code>put</code> ikilisi race condition'dır.)</li>
+    <li><code>size()</code> bile özel bir teknikle (counter'ların dağıtık tutulması) kilit contention'ı azaltır.</li>
+  </ul>
+
+  <h3>TreeMap Ne Zaman?</h3>
+  <p>TreeMap <strong>Red-Black Tree</strong> (dengeli BST) tabanlıdır; veriyi <strong>sıralı</strong> tutar. <code>firstKey()</code>, <code>lastKey()</code>, <code>floorKey()</code>, <code>headMap()</code>, <code>tailMap()</code> gibi sıra tabanlı aramalar gerekince kullanılır (örn. "belli bir tarihten önceki en yakın kaydı bul"). get/put O(log n) — HashMap'in O(1)'inden yavaş, ama sıralı erişim bedava gelir. Key sınıfı <code>Comparable</code> olmalı ya da <code>Comparator</code> vermelisin.</p>
+
+  <h3>LinkedHashMap: Ekleme Sırası Nasıl Korunur?</h3>
+  <p>Her düğüm, ekstra <code>before</code>/<code>after</code> işaretçileri taşır; tüm girişler <strong>çift yönlü bağlantılı liste</strong> olarak da bağlanır. Böylece iterasyon her zaman ekleme (veya erişim) sırasındadır. Bonus: <code>accessOrder=true</code> ile "en son erişilen en sona gider" modu — bu, LRU cache yazmak için hazır temeldir: <code>LinkedHashMap</code>'i extend edip <code>removeEldestEntry()</code>'yi override etmek klasik mülakat sorusudur.</p>
+
+  <h3>Time Complexity Özeti</h3>
+  <table>
+    <tr><th>İşlem</th><th>HashMap</th><th>ConcurrentHashMap</th><th>TreeMap</th><th>LinkedHashMap</th></tr>
+    <tr><td>get / put / containsKey</td><td>O(1) ortalama</td><td>O(1) ortalama</td><td>O(log n)</td><td>O(1)</td></tr>
+    <tr><td>Sıralı iterasyon</td><td>Yok (rastgele)</td><td>Yok</td><td><strong>Var (sıralı)</strong></td><td><strong>Var (ekleme sırası)</strong></td></tr>
+    <tr><td>İlk/son eleman</td><td>—</td><td>—</td><td>O(log n)</td><td>O(1)</td></tr>
+  </table>
+
+  <div class="tip"><strong>💡 Junior ipucu:</strong> HashMap sorusunda sayıları bil: "default kapasite 16, load factor 0.75, treeify eşiği 8, minimum tablo boyutu 64". Bu rakamlar mülakatçıya "gerçekten çalışmış" hissi verir.</div>
+</article>
+
+<article class="q" id="q9">
+  <h2 class="q-title">9. Java Application Security (Spring Security)</h2>
+  <p class="lead">"Kurumsal bir Java uygulamasında REST API'ler Spring Security ile nasıl güvenli hale getirilir?"</p>
+
+  <div class="subq">
+    <strong>Alt sorular:</strong>
+    <ul>
+      <li>Spring Security'de authentication ve authorization nasıl çalışır?</li>
+      <li>JWT tabanlı authentication ve token doğrulamayı açıkla.</li>
+      <li>OAuth 2.0 ile OpenID Connect arasındaki fark nedir?</li>
+      <li>Role-based ve metot seviyesinde erişim kontrolü nasıl uygulanır?</li>
+      <li>API'ler CSRF, CORS yanlış yapılandırması ve yetkisiz erişime karşı nasıl korunur?</li>
+      <li>Access token, refresh token ve hassas credential'lar için en iyi pratikler nelerdir?</li>
+    </ul>
+  </div>
+
+  <h3>Authentication vs Authorization (Spring Security'nin İşleyişi)</h3>
+  <ul>
+    <li><strong>Authentication (kimlik doğrulama):</strong> "Sen kimsin?" — credential doğrulama. Spring Security'de istek <strong>FilterChain</strong>'den geçer: her istek bir filtre zincirinden (SecurityFilterChain) geçer; kimlik filtreleri (örn. JWT filtresi) token'ı çözer ve <code>SecurityContext</code>'e <code>Authentication</code> nesnesi koyar.</li>
+    <li><strong>Authorization (yetkilendirme):</strong> "Bu işi yapmaya yetkin var mı?" — rol/authority kontrolü. URL bazlı (<code>requestMatchers("/admin/**").hasRole("ADMIN")</code>) ve metot bazlı olabilir.</li>
+  </ul>
+  <pre><code>@Configuration
+public class GuvenlikKonfig {
+    @Bean
+    SecurityFilterChain chain(HttpSecurity http) throws Exception {
+        return http
+            .csrf(csrf -> csrf.disable())                      // stateless API'de CSRF kapalı
+            .sessionManagement(s -> s.sessionCreationPolicy(STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated())
+            .addFilterBefore(jwtFiltresi, UsernamePasswordAuthenticationFilter.class)
+            .build();
+    }
+}</code></pre>
+
+  <h3>JWT Authentication Nasıl Çalışır?</h3>
+  <ol>
+    <li>Kullanıcı login olur → sunucu imzalı bir <strong>JWT</strong> üretir (3 bölüm: header.payload.signature). Payload'da claims var: <code>sub</code> (kullanıcı), <code>roles</code>, <code>exp</code> (bitiş zamanı).</li>
+    <li>İstemci her istekte token'ı <code>Authorization: Bearer &lt;token&gt;</code> başlığıyla gönderir.</li>
+    <li>Sunucu (stateless): imzayı <strong>gizli anahtarla (HMAC)</strong> ya da <strong>public key ile (RSA/ECDSA)</strong> doğrular, <code>exp</code>'e bakar, geçerliyse claim'lerden kullanıcıyı kurar. DB'ye session bakmaya gerek yok — ölçeklenebilirliğin ana nedeni budur.</li>
+    <li>Doğrulama tipik olarak bir custom filter'da yapılır (yukarıdaki <code>jwtFiltresi</code>), sonra normal yetkilendirme akışı devam eder.</li>
+  </ol>
+  <p><strong>Dikkat:</strong> JWT'nin zayıf yanıtı <strong>iptal (revocation)</strong> edilememesidir — token geçerlilik süresi bitene kadar geçerlidir. Çözüm: kısa ömürlü access token + refresh token + gerekirse blacklist.</p>
+
+  <h3>OAuth 2.0 vs OpenID Connect</h3>
+  <ul>
+    <li><strong>OAuth 2.0 = yetkilendirme (authorization) çerçevesi:</strong> "Bu uygulama, benim adıma API'lerime erişebilir." Access token üretir; ama kimlik bilgisi taşımaz.</li>
+    <li><strong>OpenID Connect (OIDC) = OAuth 2.0 üstüne kimlik katmanı:</strong> <code>id_token</code> (yine JWT) ile "bu kullanıcı kimdir" bilgisini standartlaştırır. "Google ile giriş" dediğinde aslında OIDC kullanıyorsun.</li>
+    <li>Kısa cevap formülü: <em>"OAuth 2.0 yetkiye, OIDC kimliğe yarar; OIDC, OAuth 2.0'ın üstünde çalışır."</em></li>
+  </ul>
+
+  <h3>Role-Based ve Metot Seviyesinde Yetki</h3>
+  <pre><code>// Metot seviyesi
+@PreAuthorize("hasRole('ADMIN')")
+public void kullaniciSil(Long id) { ... }
+
+@PreAuthorize("#id == authentication.principal.id or hasRole('ADMIN')")
+public Kullanici profilGetir(Long id) { ... }   // SpEL ile nesne bazlı kural bile yazılır</code></pre>
+  <p>Etkinleştirmek için <code>@EnableMethodSecurity</code> gerekir.</p>
+
+  <h3>CSRF, CORS, Yetkisiz Erişim</h3>
+  <ul>
+    <li><strong>CSRF:</strong> Tarayıcının otomatik cookie göndermesinden yararlanan saldırı. <strong>Stateless JWT API'de gerek yok</strong> (cookie ile otomatik auth yok) → disable edilebilir. Ama session/cookie tabanlı uygulamada <strong>zorunlu</strong>; Spring Security'nin <code>CsrfFilter</code>'ı token'ı otomatik yönetir.</li>
+    <li><strong>CORS:</strong> Tarayıcının başka origin'e istek politikası. Sunucu tarafında açıkça tanımlanmalı (<code>CorsConfigurationSource</code>): hangi origin, hangi metot, hangi header. <code>*</code> (herkese açık) + credential'lara izin vermek klasik güvenlik açığıdır.</li>
+    <li><strong>Yetkisiz erişim:</strong> Varsayılanı "her şey kapalı" yap (<code>anyRequest().authenticated()</code>), sonra tek tek aç. Ayrıca IDOR'a dikkat: "kullanıcının kendi kaydına mı bakıyor" kontrolü (bkz. yukarıdaki <code>@PreAuthorize</code> örneği) — rol yetse bile sahiplik kontrolü gerekir.</li>
+  </ul>
+
+  <h3>Token ve Credential Yönetimi — En İyi Pratikler</h3>
+  <ul>
+    <li><strong>Kısa ömürlü access token</strong> (5-15 dk) + <strong>daha uzun ömürlü refresh token</strong> (rotate ederek — her yenilemede eski refresh geçersiz olur, token theft'i tespit etmeye yardımcı olur).</li>
+    <li>Secret'ları asla kodda/env'e düz metin yazma: <strong>Vault / AWS Secrets Manager / K8s Secret</strong>. <code>application.yml</code>'e şifre koymak en yaygın junior hatasıdır.</li>
+    <li>Şifre saklama: <strong>BCrypt/Argon2</strong> gibi yavaş hash — MD5/SHA-256 asla.</li>
+    <li>Transport güvenliği: HTTPS everywhere, HSTS.</li>
+    <li>Loglara token/şifre/kimlik numarası yazma; rate limiting ile brute-force koruması; başarısız girişlerde hesap kilitleme/uyarı.</li>
+  </ul>
+
+  <div class="tip"><strong>💡 Junior ipucu:</strong> "JWT'i nerede saklarsın?" sorusu da çok gelir. Tarayıcıda <code>localStorage</code> XSS riski taşır; <code>httpOnly</code> cookie daha güvenli ama CSRF'e karşı önlem ister. Bu trade-off'u bilmek puan kazandırır.</div>
+</article>
+
+<article class="q" id="q10">
+  <h2 class="q-title">10. Gerçek Production Sorunu ve Sorun Giderme</h2>
+  <p class="lead">"Büyük ölçekli bir kurumsal Java uygulamasında karşılaştığın zor bir production sorununu anlat." (Davranışsal/mülakat hikâyesi sorusu — STAR formatında cevaplanır)</p>
+
+  <div class="subq">
+    <strong>Alt sorular:</strong>
+    <ul>
+      <li>Sorunun iş ve teknik etkisi neydi?</li>
+      <li>Kök nedeni nasıl tespit ettin?</li>
+      <li>Hangi debugging, monitoring ve profiling araçlarını kullandın?</li>
+      <li>Çözüm olarak ne uyguladın?</li>
+      <li>Yeni sorun yaratmadan düzeltmeyi nasıl doğruladın?</li>
+      <li>Benzer olayların tekrarını önlemek için ne yaptın?</li>
+    </ul>
+  </div>
+
+  <h3>Detaylı Cevap — Junior için Cevap Çatısı (STAR)</h3>
+  <p>Bu soruda gerçek hikâyen yoksa bile, <strong>yapı</strong> öğrenip örnek bir hikâye anlatabilirsin. Aşağıda gerçekçi bir örnek hikâye + her adımda mülakatçının aradığı şey var.</p>
+
+  <h3>S — Situation (Durum)</h3>
+  <p>"Sipariş servisimiz, akşam yoğun saatinde (peak saatlerde) yanıt süreleri p95 olarak 200ms'den 8 saniyeye çıktı; bazı istekler timeout oldu ve müşteri tarafında 'sipariş verilemiyor' şikayetleri arttı."</p>
+  <p><em>Aradığı şey: etkiyi iş diliyle anlatabilmen. "CPU 90%'ydı" demek yetmez; müşteri/gelir etkisini söyle.</em></p>
+
+  <h3>T — Task (Görev)</h3>
+  <p>"Ekibimde kök neden analizi ve düzeltmeden ben sorumluydum; mümkün olan en kısa sürede hizmeti geri getirip kalıcı çözümü üretmem gerekiyordu."</p>
+
+  <h3>A — Action (Aksiyon) — asıl önemli kısım</h3>
+  <ol>
+    <li><strong>Önce kalıcı izleme:</strong> Grafana'da p95 latency, hata oranı, JVM metrikleri (heap, GC süresi, aktif thread), DB connection pool kullanımı grafiklerine baktım. GC süresi normaldi → memory değildi. <strong>Connection pool bekleyen istekler yükseliyordu</strong> → ilk ipucu.</li>
+    <li><strong>Thread dump:</strong> <code>jstack</code> ile iki dump aldım; onlarca thread <code>HikariPool</code> içinde <code>getConnection</code> bekliyordu ve bir tane thread'in stack'i tek bir yavaş SQL sorgusunda takılıydı.</li>
+    <li><strong>DB tarafı:</strong> Slow query log + <code>EXPLAIN ANALYZE</code> → <code>siparis</code> tablosunda yeni eklenen bir sorgu, <code>olusturma_tarihi</code> üzerinde <em>index olmadan</em> full scan yapıyordu; tablo büyüdükçe sorgu giderek yavaşlıyordu.</li>
+    <li><strong>Araçlar kullandım:</strong> jstack (thread dump), JFR (kısa kayıtla doğrulama), Grafana/Prometheus (metrikler), DB'nin slow query log'u ve EXPLAIN.</li>
+    <li><strong>Çözüm:</strong> Acil: eksik index eklendi (online index creation ile, lock'lamadan). Kalıcı: o sorgunun kodu review'landı, N+1 riski giderildi; connection pool metriklerine alarm kuruldu.</li>
+  </ol>
+
+  <h3>R — Result (Sonuç) ve Doğrulama</h3>
+  <ul>
+    <li>"Index sonrası p95 8s → 250ms'e döndü; pool bekleyen istek sıfırlandı."</li>
+    <li><strong>Doğrulama:</strong> Düzeltmeyi önce staging'de üretim verisi boyutunda kopyayla test ettik; load testi (k6/JMeter) ile aynı yük altında karşılaştırdık; canlıya <strong>kademeli (canary)</strong> çıkardık ve metrikleri canlı izledik. Geri alma planı hazırlandı (index drop planı), ama gerek kalmadı.</li>
+    <li><strong>Önleyici tedbirler:</strong> (1) CI'a sorgu planı kontrolü (regresyonda index'siz full scan alarmı), (2) connection pool ve p95 latency için alerting, (3) production'a çıkan her DB değişikliğinin "explain kontrolü" adımı, (4) postmortem dokümanı yazıp ekible paylaştık.</li>
+  </ul>
+
+  <h3>Mülakatçının Asıl Değerlendirdiği Şeyler</h3>
+  <table>
+    <tr><th>Beklenen davranış</th><th>Junior'dan kaçınan şey</th></tr>
+    <tr><td>Sistematik teşhis (ölç → izole et → düzelt)</td><td>"Tahmin ettim ve değiştirdim"</td></tr>
+    <tr><td>Ölçümle doğrulama (öncesi/sonrası sayı)</td><td>"Düzeldi gibi" demek</td></tr>
+    <tr><td>Önleme düşünmesi (monitoring, postmortem)</td><td>Yalnızca yangın söndürme</td></tr>
+    <tr><td>Şeffaflık ve iletişim (ekibi/stakeholder'ı bilgilendirme)</td><td>Sorunu saklamak</td></tr>
+  </table>
+
+  <div class="tip"><strong>💡 Junior ipucu:</strong> Gerçek hikâyen yoksa, öğrendiğin bir olayı "ben çözsem şöyle ilerlerdim" diyerek anlat — dürüstlük + metodoloji kombinasyonu, uydurma bir kahramanlık hikâyesinden çok daha güvenilir algı yaratır. Ayrıca bu 10 sorunun 1, 2, 3 ve 6. konularındaki araç isimlerini (jstack, JFR, MAT, async-profiler, Grafana) hikâyene serpiştir; "araçları gerçekten kullanmış" izlenimi verir.</div>
+</article>
+
+<footer class="site">
+  <p>Kaynak makale: <a href="https://medium.com/@pardeepgill82/top-10-senior-java-developer-interview-questions-for-10-years-of-experience-371383e4c166">Top 10 Senior Java Developer Interview Questions for 10+ Years of Experience — Medium</a> (Freedium kopyasından alınmıştır).<br>
+  Bu doküman çalışma amaçlı hazırlanmış Türkçe özet + detaylı cevap rehberidir.</p>
+</footer>
+
+</body>
+</html>
